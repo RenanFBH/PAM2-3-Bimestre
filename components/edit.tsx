@@ -1,20 +1,24 @@
 // importando elementos
 import { ImageBackground, Keyboard, Alert } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { TextInput, Card, Avatar, Button } from 'react-native-paper';
-import { Conexao, inserirFunc } from '../conf/Banco';
+import { Conexao, updateFunc } from '../conf/Banco';
 import estilo from './css/Estilo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-// exportando função default
-export default function Add() {
+export default function Edit() {
 
   // constantes
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [depto, setDepto] = useState("");
-  const [cargo, setCargo] = useState("");
+  const navigation = useNavigation();
+  const route = useRoute();
+  const funcionario = (route.params as any)?.funcionario;
+  const [id, setId] = useState(funcionario?.id || "");
+  const [nome, setNome] = useState(funcionario?.nome || "");
+  const [email, setEmail] = useState(funcionario?.email || "");
+  const [depto, setDepto] = useState(funcionario?.depto || "");
+  const [cargo, setCargo] = useState(funcionario?.cargo || "");
   const [pressed, setPressed] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -24,30 +28,27 @@ export default function Add() {
     return regex.test(email);
   }
 
-  // função de inserir
-  async function inserir() {
-    if (!nome.trim() || !cargo.trim() || !depto.trim()) {
+  // função de editar
+  async function editar() {
+    if (!nome.trim() || !cargo.trim() || !depto.trim() || !email.trim()) {
       Alert.alert("Campos obrigatórios", "Por favor preencha Nome, Email, Cargo e Departamento.");
       return;
     }
-    if (email && !validarEmail(email)) {
+    if (!validarEmail(email)) {
       Alert.alert("Email inválido", "Por favor insira um endereço de email válido.");
       return;
     }
     try {
       const db = await Conexao();
-      if (!db) {
-        throw new Error('Banco de dados não inicializado');
-      }
-      await inserirFunc(db, nome, email, depto, cargo);
-      Alert.alert("Sucesso", "Funcionário cadastrado com sucesso!");
-      setNome("");
-      setEmail("");
-      setDepto("");
-      setCargo("");
+      await updateFunc(db, id, nome, email, depto, cargo);
+      Alert.alert(
+        "Sucesso",
+        "Funcionário atualizado com sucesso!",
+        [{ text: "OK", onPress: () => navigation.goBack() }] 
+      );
     } catch (error) {
-      Alert.alert("Erro", `Falha ao cadastrar funcionário: ${error.message}`);
-      console.error(error);
+      Alert.alert("Erro", "Não foi possível atualizar o funcionário. Tente novamente.");
+      console.log("Erro ao atualizar funcionário: ", error);
     }
   }
 
@@ -121,16 +122,30 @@ export default function Add() {
             <Button
               style={[
                 estilo.btn,
+                { backgroundColor: pressed ? '#e60000' : estilo.btn.backgroundColor, marginBottom: 10 }
+              ]}
+              mode="elevated"
+              textColor="#fff"
+              labelStyle={{ fontSize: 18 }}
+              onPress={editar}
+              onPressIn={() => setPressed(true)}
+              onPressOut={() => setPressed(false)}
+            >
+              Editar
+            </Button>
+            <Button
+              style={[
+                estilo.btn,
                 { backgroundColor: pressed ? '#e60000' : estilo.btn.backgroundColor }
               ]}
               mode="elevated"
               textColor="#fff"
               labelStyle={{ fontSize: 18 }}
-              onPress={inserir}
+              onPress={() => navigation.goBack()}
               onPressIn={() => setPressed(true)}
               onPressOut={() => setPressed(false)}
             >
-              Cadastrar
+              Voltar
             </Button>
           </Card.Content>
         </Card>

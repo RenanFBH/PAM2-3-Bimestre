@@ -4,9 +4,8 @@ import * as React from 'react';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import estilo from './css/Estilo';
 
-
 //exportando função default
-export default function Settings() {
+export default function Delete() {
   return (
     <ImageBackground
     source={require('./img/bg.jpg')}
