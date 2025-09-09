@@ -40,7 +40,7 @@ export default function Add() {
         throw new Error('Banco de dados não inicializado');
       }
       await inserirFunc(db, nome, email, depto, cargo);
-      Alert.alert("Sucesso", "Funcionário cadastrado com sucesso!");
+      Alert.alert("Cadastrado!", "Funcionário cadastrado com sucesso!");
       setNome("");
       setEmail("");
       setDepto("");

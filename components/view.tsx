@@ -1,5 +1,5 @@
 // importando elementos
-import { ImageBackground, Pressable, View } from 'react-native';
+import { ImageBackground, Pressable, View, Alert } from 'react-native';
 import * as React from 'react';
 import { useState } from 'react';
 import { TextInput, Card, Text, Button } from 'react-native-paper';
@@ -45,7 +45,7 @@ export default function ViewFuncionario() {
     if (!funcionario) return;
     await deleteFunc(db, funcionario.id);
     setFuncionario(null);
-    alert('Funcionário excluído com sucesso!');
+    Alert.alert("Deletado!", "Funcionário excluído com sucesso!");
   };
 
   return (
