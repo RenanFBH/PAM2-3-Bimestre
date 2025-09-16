@@ -20,6 +20,7 @@ export default function Edit() {
   const [depto, setDepto] = useState(funcionario?.depto || "");
   const [cargo, setCargo] = useState(funcionario?.cargo || "");
   const [pressed, setPressed] = useState(false);
+    const [pressed2, setPressed2] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   // função de validar email
@@ -136,14 +137,14 @@ export default function Edit() {
             <Button
               style={[
                 estilo.btn,
-                { backgroundColor: pressed ? '#e60000' : estilo.btn.backgroundColor }
+                { backgroundColor: pressed2 ? '#e60000' : estilo.btn.backgroundColor }
               ]}
               mode="elevated"
               textColor="#fff"
               labelStyle={{ fontSize: 18 }}
               onPress={() => navigation.goBack()}
-              onPressIn={() => setPressed(true)}
-              onPressOut={() => setPressed(false)}
+              onPressIn={() => setPressed2(true)}
+              onPressOut={() => setPressed2(false)}
             >
               Voltar
             </Button>

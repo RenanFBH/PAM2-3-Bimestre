@@ -22,17 +22,20 @@ async function createTable(db: SQLite.SQLiteDatabase) {
   try {
     await db.execAsync(
       `PRAGMA journal_mode = WAL;
-        CREATE TABLE IF NOT EXISTS Funcionarios ( 
+       CREATE TABLE IF NOT EXISTS Funcionarios ( 
           Id_fun INTEGER PRIMARY KEY AUTOINCREMENT, 
           nome_fun VARCHAR(50),
           email_fun VARCHAR(50),
           depto_fun VARCHAR(30),
-          cargo_fun VARCHAR(20) 
-    `);
+          cargo_fun VARCHAR(20)
+       );` 
+    );
+    console.log('Tabela Funcionarios criada ou já existente');
   } catch (erro) {
-    console.log('Erro Tabela !!!' + erro);           
+    console.log('Erro ao criar tabela: ' + erro);           
   }
 }
+
 
 // deletando banco de dados
 async function dropTable(db: SQLite.SQLiteDatabase, tableName: string) {

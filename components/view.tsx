@@ -1,5 +1,5 @@
 // importando elementos
-import { ImageBackground, Pressable, View } from 'react-native';
+import { ImageBackground, Pressable, View, Alert } from 'react-native';
 import * as React from 'react';
 import { useState } from 'react';
 import { TextInput, Card, Text, Button } from 'react-native-paper';
@@ -21,7 +21,7 @@ export default function ViewFuncionario() {
     const db = await Conexao();
     const funcionarioId = parseInt(id, 10);
     if (isNaN(funcionarioId)) {
-      alert('Digite um ID válido');
+      Alert.alert("Erro", "Digite um ID válido.");
       return;
     }
     const result = await selectFuncId(db, funcionarioId);
@@ -34,7 +34,7 @@ export default function ViewFuncionario() {
         cargo: result.cargo 
       });
     } else {
-      alert('Funcionário não encontrado');
+      Alert.alert("Erro", "Funcionário não encontrado.");
       setFuncionario(null);
     }
   }
@@ -45,7 +45,7 @@ export default function ViewFuncionario() {
     if (!funcionario) return;
     await deleteFunc(db, funcionario.id);
     setFuncionario(null);
-    alert('Funcionário excluído com sucesso!');
+    Alert.alert("Sucesso", "Funcionário excluído com sucesso!");
   };
 
   return (
